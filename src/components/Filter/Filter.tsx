@@ -40,7 +40,7 @@ export const Filter: FC = () => {
 
   return (
     <Grid container item xs={12}>
-      <Grid item xs={3}>
+      <Grid item xs={2}>
         <TextField
           fullWidth
           label="Country"
@@ -50,7 +50,7 @@ export const Filter: FC = () => {
           onChange={handleQueryChange}
         />
       </Grid>
-      <Grid item xs={7} />
+      <Grid item xs={8} />
       <Grid item xs={2}>
 
         <FormControl fullWidth>
