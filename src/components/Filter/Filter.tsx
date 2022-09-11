@@ -1,46 +1,33 @@
 import React, {
-  ChangeEvent, FC, useCallback, useState,
+  ChangeEvent, FC, useState,
 } from 'react';
-import debounce from 'lodash.debounce';
 import {
   FormControl,
   Grid, InputLabel, MenuItem, Select, TextField,
 } from '@mui/material';
-import { useSearchParams } from 'react-router-dom';
+import { useDebouncedCallback } from 'use-debounce';
 import { RegionsFilter } from '../../types/RegionsFilter';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectors } from '../../app/store';
+import { setAppliedQuery, setFilterType } from '../../features/filterSlice';
 
 export const Filter: FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const appliedQuery = searchParams.get('query') || '';
-  const region = searchParams.get('region') || '';
-  const [inputQuery, setInputQuery] = useState(appliedQuery);
+  const dispatch = useAppDispatch();
+  const { filterType } = useAppSelector(selectors.getFilters);
+  const [inputQuery, setInputQuery] = useState('');
 
-  const applyQuery = useCallback(
-    debounce((query: string) => {
-      if (query || region) {
-        setSearchParams({ query, region });
-      } else {
-        setSearchParams({});
-      }
-    }, 500),
-    [],
-  );
+  const applyQuery = useDebouncedCallback((value: string) => {
+    dispatch(setAppliedQuery(value));
+  }, 300);
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputQuery(event.target.value);
     applyQuery(event.target.value);
   };
 
-  const handleFilterChange = (regionFilter: RegionsFilter | '') => {
-    setSearchParams({
-      query: appliedQuery,
-      region: regionFilter,
-    });
-  };
-
   return (
     <Grid container item xs={12}>
-      <Grid item xs={2}>
+      <Grid item xs={12} sm={5} md={2}>
         <TextField
           fullWidth
           label="Country"
@@ -50,15 +37,17 @@ export const Filter: FC = () => {
           onChange={handleQueryChange}
         />
       </Grid>
-      <Grid item xs={8} />
-      <Grid item xs={2}>
+      <Grid item xs={0} sm={2} md={8} />
+      <Grid item xs={12} sm={5} md={2}>
 
-        <FormControl fullWidth>
+        <FormControl fullWidth margin="normal">
           <InputLabel id="demo-simple-select-label">Region</InputLabel>
           <Select
-            value={region}
+            value={filterType}
             label="Region"
-            onChange={(event) => handleFilterChange(event.target.value as RegionsFilter)}
+            onChange={(event) => {
+              dispatch(setFilterType(event.target.value));
+            }}
           >
             <MenuItem value="">All</MenuItem>
             <MenuItem value={RegionsFilter.Africa}>Africa</MenuItem>

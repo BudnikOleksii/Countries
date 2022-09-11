@@ -1,37 +1,26 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect } from 'react';
 import './App.scss';
 import { Grid, Paper } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
-import { useSearchParams } from 'react-router-dom';
-import { client, ENDPOINTS } from './api/countries';
 import { CountryCard } from './components/CountryCard';
 import { Filter } from './components/Filter';
-import { Country } from './types/Country';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { fetchCountriesByRegion } from './features/countriesSlice';
+import { RegionsFilter } from './types/RegionsFilter';
+import { selectors } from './app/store';
 
 export const App: React.FC = () => {
-  const [searchParams] = useSearchParams();
-  const appliedQuery = searchParams.get('query') || '';
-  const region = searchParams.get('region') || '';
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const dispatch = useAppDispatch();
+  const { countriesError, countriesIsLoading } = useAppSelector(selectors.getCountries);
+  const preparedCountries = useAppSelector(selectors.getPreparedCountries);
 
   useEffect(() => {
-    setIsLoading(true);
-
-    client.get<Country[]>(ENDPOINTS.all)
-      .then(setCountries)
-      .catch(setError)
-      .finally(() => setIsLoading(false));
+    dispatch(fetchCountriesByRegion(RegionsFilter.Africa));
+    dispatch(fetchCountriesByRegion(RegionsFilter.Americas));
+    dispatch(fetchCountriesByRegion(RegionsFilter.Asia));
+    dispatch(fetchCountriesByRegion(RegionsFilter.Europe));
+    dispatch(fetchCountriesByRegion(RegionsFilter.Oceania));
   }, []);
-
-  const preparedCountries = useMemo(() => {
-    const query = appliedQuery.toLowerCase();
-
-    return countries.filter(country => (
-      country.region.includes(region) && country.name.common.toLowerCase().includes(query)
-    ));
-  }, [appliedQuery, region, countries]);
 
   return (
     <div className="app">
@@ -39,9 +28,9 @@ export const App: React.FC = () => {
         <h1 className="app__header">Where in the world?</h1>
       </Paper>
 
-      {isLoading && <LinearProgress />}
+      {countriesIsLoading && <LinearProgress />}
 
-      {!error && (
+      {!countriesError && (
         <Paper elevation={16} style={{ padding: '20px' }}>
           <Filter />
           <Grid container spacing={2}>

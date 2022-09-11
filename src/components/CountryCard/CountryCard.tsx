@@ -22,7 +22,7 @@ export const CountryCard: FC<Props> = memo(({ country }) => {
   } = country;
 
   return (
-    <Grid item xs={2}>
+    <Grid item xs={12} sm={6} md={4} lg={2}>
       <Card sx={{ maxWidth: 345 }}>
         <CardMedia
           component="img"

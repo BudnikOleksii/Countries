@@ -1,7 +1,11 @@
+import { RegionsFilter } from '../types/RegionsFilter';
+import { Country } from '../types/Country';
+
 const BASE_URL = 'https://restcountries.com/v3.1';
 
 export const ENDPOINTS = {
   all: '/all',
+  region: (region: RegionsFilter) => `/region/${region}`,
 };
 
 type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
@@ -32,4 +36,8 @@ const request = <T>(
 
 export const client = {
   get: <T>(url: string) => request<T>(url),
+};
+
+export const getCountriesByRegion = (region: RegionsFilter) => {
+  return client.get<Country[]>(ENDPOINTS.region(region));
 };
