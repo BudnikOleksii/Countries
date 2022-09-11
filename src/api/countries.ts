@@ -1,11 +1,13 @@
 import { RegionsFilter } from '../types/RegionsFilter';
-import { Country } from '../types/Country';
+import { Country, CountryDetails } from '../types/Country';
 
 const BASE_URL = 'https://restcountries.com/v3.1';
 
 export const ENDPOINTS = {
   all: '/all',
-  region: (region: RegionsFilter) => `/region/${region}`,
+  byRegionName: (region: RegionsFilter) => `/region/${region}`,
+  byName: (name: string) => `/name/${name}`,
+  byCode: (code: string) => `/alpha/${code}`,
 };
 
 type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
@@ -39,5 +41,13 @@ export const client = {
 };
 
 export const getCountriesByRegion = (region: RegionsFilter) => {
-  return client.get<Country[]>(ENDPOINTS.region(region));
+  return client.get<Country[]>(ENDPOINTS.byRegionName(region));
+};
+
+export const getCountryByName = (name: string) => {
+  return client.get<CountryDetails[]>(ENDPOINTS.byName(name));
+};
+
+export const getCountryByCode = (code: string) => {
+  return client.get<Country[]>(ENDPOINTS.byCode(code));
 };

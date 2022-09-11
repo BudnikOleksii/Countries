@@ -2,6 +2,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Country } from '../types/Country';
 import { getCountriesByRegion } from '../api/countries';
+import { RegionsFilter } from '../types/RegionsFilter';
 
 interface CurrentPostState {
   countries: { [key: string] : Country[] };
@@ -18,6 +19,17 @@ const initialState: CurrentPostState = {
 export const fetchCountriesByRegion = createAsyncThunk(
   'countries/fetch_countriesByRegion',
   getCountriesByRegion,
+);
+
+export const fetchAllCountries = createAsyncThunk(
+  'countries/fetch_countries',
+  async (_, thunkAPI) => {
+    thunkAPI.dispatch(fetchCountriesByRegion(RegionsFilter.Oceania));
+    thunkAPI.dispatch(fetchCountriesByRegion(RegionsFilter.Africa));
+    thunkAPI.dispatch(fetchCountriesByRegion(RegionsFilter.Americas));
+    thunkAPI.dispatch(fetchCountriesByRegion(RegionsFilter.Asia));
+    thunkAPI.dispatch(fetchCountriesByRegion(RegionsFilter.Europe));
+  },
 );
 
 export const countriesSlice = createSlice({

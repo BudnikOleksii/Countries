@@ -6,11 +6,15 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import { Grid } from '@mui/material';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import SouthAmericaIcon from '@mui/icons-material/SouthAmerica';
+import GroupsIcon from '@mui/icons-material/Groups';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import Grid from '@mui/material/Grid';
 import { Country } from '../../types/Country';
+import { CountryLink } from '../CountryLink';
 
 interface Props {
   country: Country;
@@ -28,32 +32,45 @@ export const CountryCard: FC<Props> = memo(({ country }) => {
           component="img"
           height="140"
           image={flags.svg}
-          alt="green iguana"
+          alt={name.common}
         />
+
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {name.common}
           </Typography>
+
           <List>
             <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemText primary={`Region: ${region}`} />
-              </ListItemButton>
+              <ListItemIcon>
+                <SouthAmericaIcon />
+              </ListItemIcon>
+
+              <ListItemText primary={`Region: ${region}`} />
             </ListItem>
+
             <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemText primary={`Population: ${population}`} />
-              </ListItemButton>
+              <ListItemIcon>
+                <GroupsIcon />
+              </ListItemIcon>
+
+              <ListItemText primary={`Population: ${population}`} />
             </ListItem>
+
             <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemText primary={`Capital: ${capital}`} />
-              </ListItemButton>
+              <ListItemIcon>
+                <LocationCityIcon />
+              </ListItemIcon>
+
+              <ListItemText primary={`Capital: ${capital}`} />
             </ListItem>
           </List>
         </CardContent>
+
         <CardActions>
-          <Button size="small">Learn More</Button>
+          <Button size="small" sx={{ color: '#777' }}>
+            <CountryLink countryName={name.common} text="Learn more" />
+          </Button>
         </CardActions>
       </Card>
     </Grid>

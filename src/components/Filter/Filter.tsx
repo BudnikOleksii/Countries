@@ -1,10 +1,12 @@
 import React, {
   ChangeEvent, FC, useState,
 } from 'react';
-import {
-  FormControl,
-  Grid, InputLabel, MenuItem, Select, TextField,
-} from '@mui/material';
+import Grid from '@mui/material/Grid';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
 import { useDebouncedCallback } from 'use-debounce';
 import { RegionsFilter } from '../../types/RegionsFilter';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -37,11 +39,13 @@ export const Filter: FC = () => {
           onChange={handleQueryChange}
         />
       </Grid>
-      <Grid item xs={0} sm={2} md={8} />
-      <Grid item xs={12} sm={5} md={2}>
 
+      <Grid item xs={0} sm={2} md={8} />
+
+      <Grid item xs={12} sm={5} md={2}>
         <FormControl fullWidth margin="normal">
           <InputLabel id="demo-simple-select-label">Region</InputLabel>
+
           <Select
             value={filterType}
             label="Region"

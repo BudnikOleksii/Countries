@@ -8,3 +8,23 @@
     padding: 20px;
   }
 }
+
+.flex-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px
+}
+
+.card-block {
+  width: 40%;
+
+  &__img {
+    width: 100%;
+  }
+}

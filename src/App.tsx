@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import './App.scss';
-import { Grid, Paper } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import LinearProgress from '@mui/material/LinearProgress';
 import { CountryCard } from './components/CountryCard';
 import { Filter } from './components/Filter';
 import { useAppDispatch, useAppSelector } from './app/hooks';
-import { fetchCountriesByRegion } from './features/countriesSlice';
-import { RegionsFilter } from './types/RegionsFilter';
+import { fetchAllCountries } from './features/countriesSlice';
 import { selectors } from './app/store';
 
 export const App: React.FC = () => {
@@ -15,11 +15,7 @@ export const App: React.FC = () => {
   const preparedCountries = useAppSelector(selectors.getPreparedCountries);
 
   useEffect(() => {
-    dispatch(fetchCountriesByRegion(RegionsFilter.Africa));
-    dispatch(fetchCountriesByRegion(RegionsFilter.Americas));
-    dispatch(fetchCountriesByRegion(RegionsFilter.Asia));
-    dispatch(fetchCountriesByRegion(RegionsFilter.Europe));
-    dispatch(fetchCountriesByRegion(RegionsFilter.Oceania));
+    dispatch(fetchAllCountries());
   }, []);
 
   return (
@@ -30,7 +26,7 @@ export const App: React.FC = () => {
 
       {countriesIsLoading && <LinearProgress />}
 
-      {!countriesError && (
+      {!countriesError && !countriesIsLoading && (
         <Paper elevation={16} style={{ padding: '20px' }}>
           <Filter />
           <Grid container spacing={2}>

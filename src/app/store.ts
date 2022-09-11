@@ -1,4 +1,4 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import countriesStateReducer from '../features/countriesSlice';
 import filterStateReducer from '../features/filterSlice';
 import { Country } from '../types/Country';
@@ -24,7 +24,7 @@ const getPreparedCountries = (state: RootState) => {
     visibleCountries = countries[filterType];
   } else {
     Object.values(countries).forEach(regionCountries => {
-      visibleCountries.concat(regionCountries);
+      visibleCountries.push(...regionCountries);
     });
   }
 
@@ -38,12 +38,3 @@ export const selectors = {
   getFilters: (state: RootState) => state.filtersState,
   getPreparedCountries,
 };
-
-/* eslint-disable @typescript-eslint/indent */
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
-  >;
-/* eslint-enable @typescript-eslint/indent */
