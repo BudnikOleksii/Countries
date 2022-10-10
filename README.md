@@ -1,7 +1,7 @@
 # Countries App
 
 ## Technologies used:
-- React
+- React, Redux Toolkit
 - UI Library: MaterialUI
 - REST API: [REST COUNTRIES](https://restcountries.com/)
 
